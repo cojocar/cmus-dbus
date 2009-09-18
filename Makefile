@@ -7,11 +7,13 @@ include scripts/lib.mk
 
 CFLAGS += -D_FILE_OFFSET_BITS=64
 
-CMUS_LIBS = $(PTHREAD_LIBS) $(NCURSES_LIBS) $(ICONV_LIBS) $(DL_LIBS) -lm $(COMPAT_LIBS)
+CMUS_LIBS = $(PTHREAD_LIBS) $(NCURSES_LIBS) $(ICONV_LIBS) $(DL_LIBS) -lm $(COMPAT_LIBS) $(DBUS_LIBS) `pkg-config --libs gthread-2.0`
 
 input.o main.o ui_curses.o: .version
 input.o main.o ui_curses.o: CFLAGS += -DVERSION=\"$(VERSION)\"
 main.o server.o: CFLAGS += -DDEFAULT_PORT=3000
+
+dbus-api.o dbus-server.o: CFLAGS += $(DBUS_CFLAGS)
 
 .version: Makefile
 	@test "`cat $@ 2> /dev/null`" = "$(VERSION)" && exit 0; \
@@ -19,6 +21,7 @@ main.o server.o: CFLAGS += -DDEFAULT_PORT=3000
 
 # programs {{{
 cmus-y := \
+	dbus-api.o dbus-server.o \
 	ape.o browser.o buffer.o cache.o cmdline.o cmus.o command_mode.o comment.o \
 	debug.o editable.o expr.o filters.o \
 	format_print.o gbuf.o glob.o help.o history.o http.o id3.o input.o job.o \
@@ -29,7 +32,7 @@ cmus-y := \
 	track.o track_info.o tree.o uchar.o ui_curses.o \
 	utf8_encode.lo window.o worker.o xstrjoin.o
 
-$(cmus-y): CFLAGS += $(PTHREAD_CFLAGS) $(NCURSES_CFLAGS) $(ICONV_CFLAGS) $(DL_CFLAGS)
+$(cmus-y): CFLAGS += $(PTHREAD_CFLAGS) $(NCURSES_CFLAGS) $(ICONV_CFLAGS) $(DL_CFLAGS) $(DBUS_CFLAGS)
 
 cmus: $(cmus-y) file.o path.o prog.o xmalloc.o
 	$(call cmd,ld,$(CMUS_LIBS))

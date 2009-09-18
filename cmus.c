@@ -18,6 +18,8 @@
 #include "load_dir.h"
 #include "ui_curses.h"
 #include "cache.h"
+#include "config/dbus.h"
+#include "dbus-server.h"
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -36,6 +38,11 @@ int cmus_init(void)
 	cache_init();
 	worker_init();
 	play_queue_init();
+
+#ifdef CONFIG_DBUS
+	cmus_dbus_start();
+#endif
+
 	return 0;
 }
 
