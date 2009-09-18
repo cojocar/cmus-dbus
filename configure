@@ -212,6 +212,14 @@ check_waveout()
 	return 1
 }
 
+check_dbus()
+{
+	dbus_name="dbus-glib-1"
+#	check_library DBUS "`pkg-config --cflags ${dbus_name}`" "`pkg-config --libs ${dbus_name}`" || return 1
+	pkg_config DBUS ${dbus_name}
+	return $?
+}
+
 check_mp4()
 {
 	check_header faad.h &&
@@ -244,6 +252,7 @@ prefix=/usr/local
 DEBUG=1
 CONFIG_TREMOR=n
 CONFIG_MIKMOD=n
+CONFIG_MP4=n
 # unset CONFIG_* variables: if check succeeds 'y', otherwise 'n'
 
 USAGE="
@@ -324,6 +333,7 @@ check check_arts    CONFIG_ARTS
 check check_oss     CONFIG_OSS
 check check_sun     CONFIG_SUN
 check check_waveout CONFIG_WAVEOUT
+check check_dbus	CONFIG_DBUS
 
 test "$WORDS_BIGENDIAN" = y && CFLAGS="${CFLAGS} -DWORDS_BIGENDIAN"
 
@@ -334,9 +344,10 @@ config_header config/datadir.h DATADIR
 config_header config/libdir.h LIBDIR
 config_header config/debug.h DEBUG
 config_header config/tremor.h CONFIG_TREMOR
+config_header config/dbus.h		CONFIG_DBUS
 
 makefile_vars bindir datadir libdir mandir exampledir
 makefile_vars CONFIG_FLAC CONFIG_MAD CONFIG_MIKMOD CONFIG_MODPLUG CONFIG_MPC CONFIG_VORBIS CONFIG_WAVPACK CONFIG_WAV CONFIG_MP4 CONFIG_AAC CONFIG_FFMPEG
-makefile_vars CONFIG_ALSA CONFIG_AO CONFIG_ARTS CONFIG_OSS CONFIG_SUN CONFIG_WAVEOUT
+makefile_vars CONFIG_ALSA CONFIG_AO CONFIG_ARTS CONFIG_OSS CONFIG_SUN CONFIG_WAVEOUT CONFIG_DBUS
 
 generate_config_mk
