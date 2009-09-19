@@ -13,3 +13,5 @@ tags
 /cmus
 /cmus-remote
 /dbus-bindings.h
+/dbus-marshal.c
+/dbus-marshal.h

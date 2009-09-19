@@ -24,9 +24,15 @@ dbus-bindings.o dbus-api.o dbus-server.o: CFLAGS += $(DBUS_CFLAGS)
 dbus-bindings.h: dbus-bindings.xml
 	dbus-binding-tool --mode=glib-server --prefix=cmus $< > $@ 
 
+dbus-marshal.o: dbus-marshal.c dbus-marshal.h
+dbus-marshal.c: dbus-marshal.list
+	glib-genmarshal --body $< > $@
+dbus-marshal.h: dbus-marshal.list
+	glib-genmarshal --header $< > $@
+
 # programs {{{
 cmus-y := \
-	dbus-api.o dbus-server.o \
+	dbus-marshal.o dbus-api.o dbus-server.o \
 	ape.o browser.o buffer.o cache.o cmdline.o cmus.o command_mode.o comment.o \
 	debug.o editable.o expr.o filters.o \
 	format_print.o gbuf.o glob.o help.o history.o http.o id3.o input.o job.o \
@@ -85,14 +91,14 @@ ip-$(CONFIG_AAC)	+= aac.so
 ip-$(CONFIG_FFMPEG)	+= ffmpeg.so
 
 $(flac-objs):		CFLAGS += $(FLAC_CFLAGS)
-$(mad-objs):		CFLAGS += $(MAD_CFLAGS)
+$(mad-objs):		CFLAGS += $(MAD_CFLAGS) $(DBUS_CFLAGS)
 $(mikmod-objs):		CFLAGS += $(MIKMOD_CFLAGS)
 $(modplug-objs):	CFLAGS += $(MODPLUG_CFLAGS)
 $(mpc-objs):		CFLAGS += $(MPC_CFLAGS)
 $(vorbis-objs):		CFLAGS += $(VORBIS_CFLAGS)
 $(wavpack-objs):	CFLAGS += $(WAVPACK_CFLAGS)
 $(mp4-objs):		CFLAGS += $(MP4_CFLAGS)
-$(aac-objs):		CFLAGS += $(AAC_CFLAGS)
+$(aac-objs):		CFLAGS += $(AAC_CFLAGS) $(DBUS_CFLAGS)
 $(ffmpeg-objs):		CFLAGS += $(FFMPEG_CFLAGS)
 
 flac.so: $(flac-objs) $(libcmus-y)
@@ -188,7 +194,7 @@ quiet_cmd_ttman = MAN    $@
 
 data		= $(wildcard data/*)
 
-clean		+= *.o *.lo *.so cmus libcmus.a cmus.def cmus.base cmus.exp cmus-remote Doc/*.o Doc/ttman Doc/*.1 dbus-bindings.h
+clean		+= *.o *.lo *.so cmus libcmus.a cmus.def cmus.base cmus.exp cmus-remote Doc/*.o Doc/ttman Doc/*.1 dbus-bindings.h dbus-marshal.c dbus-marshal.h
 distclean	+= .version config.mk config/*.h tags
 
 main: cmus cmus-remote
