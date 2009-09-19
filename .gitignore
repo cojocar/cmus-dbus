@@ -12,3 +12,4 @@ tags
 /config.mk
 /cmus
 /cmus-remote
+/dbus-bindings.h

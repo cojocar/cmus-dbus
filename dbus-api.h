@@ -5,7 +5,6 @@
 
 #include "dbus-server.h"
 
-gboolean get_int(DBusCmus *obj, int *out, GError **err);
-gboolean dbus_cmus_pause(DBusCmus *obj, GError **err);
+gboolean dbus_cmus_cmd(DBusCmus *obj, char *cmd, int *ret, GError **err);
 
 #endif   /* ----- #ifndef DBUS_API_INC  ----- */
