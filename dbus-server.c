@@ -154,7 +154,7 @@ cmus_dbus_signal(char *argv[])
 			STR(get_val("artist", argv)),
 			STR(get_val("title", argv)),
 			STR(get_val("album", argv)),
-			11,
-			0,
+			atoi(STR(get_val("duration", argv))),
+			atoi(STR(get_val("tracknumber", argv))),
 			"");
 }
