@@ -19,7 +19,7 @@ typedef struct {
 
 void cmus_dbus_start(void);
 void cmus_dbus_stop(void);
-void cmus_dbus_signal(struct id3tag *);
+void cmus_dbus_signal(char **);
 GType cmus_get_type(void);
 
 #endif   /* ----- #ifndef DBUS_SERVER_INC  ----- */
