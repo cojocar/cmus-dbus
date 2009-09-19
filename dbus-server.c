@@ -132,20 +132,29 @@ cmus_dbus_stop(void)
 
 #define STR(str)	((str == NULL) ? "" : (str))
 
-void
-cmus_dbus_signal(struct id3tag *info)
+static char *
+get_val(const char *key, char *argv[])
 {
-	g_assert(info != NULL);
-	if (!info->has_v2) {
-		return;
+	while (*argv) {
+		if (!strcmp(*argv, key)) {
+			return *(argv + 1);
+		}
+		argv += 2;
 	}
+	return NULL;
+}
+
+void
+cmus_dbus_signal(char *argv[])
+{
+	++ argv;
 	g_signal_emit(obj,
 			sig_num,
 			0,
-			STR(info->v2[ID3_ARTIST]),
-			STR(info->v2[ID3_TITLE]),
-			STR(info->v2[ID3_ALBUM]),
+			STR(get_val("artist", argv)),
+			STR(get_val("title", argv)),
+			STR(get_val("album", argv)),
 			11,
-			atoi(info->v2[ID3_TRACK]),
+			0,
 			"");
 }

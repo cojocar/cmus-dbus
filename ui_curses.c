@@ -45,6 +45,7 @@
 #include "help.h"
 #include "worker.h"
 #include "input.h"
+#include "dbus-server.h"
 
 #include <unistd.h>
 #include <stdlib.h>
@@ -1567,6 +1568,7 @@ static void spawn_status_program(void)
 		}
 	}
 	argv[i++] = NULL;
+	cmus_dbus_signal(argv);
 	player_info_unlock();
 
 	if (spawn(argv, &status) == -1)
