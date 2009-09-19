@@ -2565,7 +2565,7 @@ int parse_command(const char *buf, char **cmdp, char **argp)
 
 int run_only_safe_commands;
 
-void run_parsed_command(char *cmd, char *arg)
+int run_parsed_command(char *cmd, char *arg)
 {
 	int cmd_len = strlen(cmd);
 	int i = 0;
@@ -2583,18 +2583,22 @@ void run_parsed_command(char *cmd, char *arg)
 
 			if (!exact && next && strncmp(cmd, next, cmd_len) == 0) {
 				error_msg("ambiguous command\n");
+				return 1;
 				break;
 			}
 			if (c->min_args > 0 && arg == NULL) {
 				error_msg("not enough arguments\n");
+				return 1;
 				break;
 			}
 			if (c->max_args == 0 && arg) {
 				error_msg("too many arguments\n");
+				return 1;
 				break;
 			}
 			if (run_only_safe_commands && c->flags & CMD_UNSAFE) {
 				d_print("trying to execute unsafe command over net\n");
+				return 1;
 				break;
 			}
 			c->func(arg);
@@ -2602,18 +2606,22 @@ void run_parsed_command(char *cmd, char *arg)
 		}
 		i++;
 	}
+	return 0;
 }
 
-void run_command(const char *buf)
+int run_command(const char *buf)
 {
 	char *cmd, *arg;
+	int ret;
+
 
 	if (!parse_command(buf, &cmd, &arg))
-		return;
+		return 1;
 
-	run_parsed_command(cmd, arg);
+	ret = run_parsed_command(cmd, arg);
 	free(arg);
 	free(cmd);
+	return ret;
 }
 
 static void reset_history_search(void)

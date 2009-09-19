@@ -13,11 +13,16 @@ input.o main.o ui_curses.o: .version
 input.o main.o ui_curses.o: CFLAGS += -DVERSION=\"$(VERSION)\"
 main.o server.o: CFLAGS += -DDEFAULT_PORT=3000
 
-dbus-api.o dbus-server.o: CFLAGS += $(DBUS_CFLAGS)
+dbus-bindings.o dbus-api.o dbus-server.o: dbus-bindings.h
+dbus-bindings.o dbus-api.o dbus-server.o: CFLAGS += $(DBUS_CFLAGS) 
 
 .version: Makefile
 	@test "`cat $@ 2> /dev/null`" = "$(VERSION)" && exit 0; \
 	echo "   GEN    $@"; echo $(VERSION) > $@
+
+
+dbus-bindings.h: dbus-bindings.xml
+	dbus-binding-tool --mode=glib-server --prefix=cmus $< > $@ 
 
 # programs {{{
 cmus-y := \
@@ -183,7 +188,7 @@ quiet_cmd_ttman = MAN    $@
 
 data		= $(wildcard data/*)
 
-clean		+= *.o *.lo *.so cmus libcmus.a cmus.def cmus.base cmus.exp cmus-remote Doc/*.o Doc/ttman Doc/*.1
+clean		+= *.o *.lo *.so cmus libcmus.a cmus.def cmus.base cmus.exp cmus-remote Doc/*.o Doc/ttman Doc/*.1 dbus-bindings.h
 distclean	+= .version config.mk config/*.h tags
 
 main: cmus cmus-remote
