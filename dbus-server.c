@@ -16,9 +16,13 @@
 #include "dbus-server.h"
 #include "dbus-api.h"
 #include "dbus-bindings.h"
+#include "dbus-marshal.h"
 
+#include "id3.h"
 
 G_DEFINE_TYPE(DBusCmus, cmus, G_TYPE_OBJECT);
+
+static guint sig_num;
 
 static void
 cmus_init(DBusCmus *cmus)
@@ -28,14 +32,29 @@ cmus_init(DBusCmus *cmus)
 static void
 cmus_class_init(DBusCmusClass *cmus_class)
 {
+	sig_num = g_signal_new("now_playing", 
+		G_OBJECT_CLASS_TYPE(cmus_class),
+		G_SIGNAL_RUN_LAST,
+		0,
+		NULL,
+		NULL,
+		g_cclosure_user_marshal_VOID__STRING_STRING_STRING_INT_INT_STRING,
+		G_TYPE_NONE,
+		6,
+		G_TYPE_STRING,
+		G_TYPE_STRING,
+		G_TYPE_STRING,
+		G_TYPE_INT,
+		G_TYPE_INT,
+		G_TYPE_STRING);
 	dbus_g_object_type_install_info(
 			CMUS_TYPE, &dbus_glib_cmus_object_info);
 }
 
+static GObject *obj;
 static gpointer
 cmus_dbus_thread(gpointer data)
 {
-	GObject *obj;
 	GMainLoop *loop;
 	GError *error = NULL;
 	DBusGConnection *connection;
@@ -85,6 +104,7 @@ cmus_dbus_thread(gpointer data)
 	}
 //	dbus_connection_setup_with_g_main(connection, NULL);
 	//*/
+	
 	g_main_loop_run(loop);
 	g_printf("gata_dbus\n");
 	return NULL;
@@ -108,4 +128,24 @@ cmus_dbus_start(void)
 void
 cmus_dbus_stop(void)
 {
+}
+
+#define STR(str)	((str == NULL) ? "" : (str))
+
+void
+cmus_dbus_signal(struct id3tag *info)
+{
+	g_assert(info != NULL);
+	if (!info->has_v2) {
+		return;
+	}
+	g_signal_emit(obj,
+			sig_num,
+			0,
+			STR(info->v2[ID3_ARTIST]),
+			STR(info->v2[ID3_TITLE]),
+			STR(info->v2[ID3_ALBUM]),
+			11,
+			atoi(info->v2[ID3_TRACK]),
+			"");
 }

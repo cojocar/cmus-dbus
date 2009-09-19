@@ -23,6 +23,7 @@
 #include "id3.h"
 #include "comment.h"
 #include "read_wrapper.h"
+#include "dbus-server.h"
 
 #include <faad.h>
 
@@ -365,6 +366,7 @@ static int aac_read_comments(struct input_plugin_data *ip_data,
 		d_print("error: %s\n", strerror(errno));
 		goto out;
 	}
+	cmus_dbus_signal(&id3);
 
 	for (i = 0; i < NUM_ID3_KEYS; i++) {
 		char *val = id3_get_comment(&id3, i);

@@ -24,6 +24,7 @@
 #include "xmalloc.h"
 #include "read_wrapper.h"
 #include "debug.h"
+#include "dbus-server.h"
 
 #include <errno.h>
 #include <sys/types.h>
@@ -141,6 +142,7 @@ static int mad_read_comments(struct input_plugin_data *ip_data,
 		d_print("corrupted tag?\n");
 		goto next;
 	}
+	cmus_dbus_signal(&id3);
 
 	for (i = 0; i < NUM_ID3_KEYS; i++) {
 		char *val = id3_get_comment(&id3, i);
