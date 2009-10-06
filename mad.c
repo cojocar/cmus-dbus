@@ -24,7 +24,6 @@
 #include "xmalloc.h"
 #include "read_wrapper.h"
 #include "debug.h"
-#include "dbus-server.h"
 
 #include <errno.h>
 #include <sys/types.h>
