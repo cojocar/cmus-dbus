@@ -8,6 +8,7 @@
 #include "options.h"
 #include "xmalloc.h"
 #include "debug.h"
+#include "dbus-server.h"
 
 #include <pthread.h>
 #include <string.h>
@@ -358,6 +359,7 @@ struct track_info *sorted_set_selected(void)
 	if (list_empty(&lib_editable.head))
 		return NULL;
 
+	cmus_dbus_hook(DBUS_SORTED_ENTER);
 	window_get_sel(lib_editable.win, &sel);
 	return lib_set_track(iter_to_sorted_track(&sel));
 }

@@ -3,16 +3,17 @@
 <interface name="media.player.cmus">
 	<annotation name="org.freedesktop.DBus.GLib.CSymbol" value="cmus"/>
 	<signal name="NowPlaying">
+		<arg type="i" name="op" />
 		<arg type="s" name="artist"/>
 		<arg type="s" name="track"/>
 		<arg type="s" name="album"/>
-		<arg type="i" name="secs" />
 		<arg type="i" name="track_number" />
-		<arg type="s" name="mb_trackid" />
+		<arg type="i" name="secs" />
+		<arg type="i" name="pos" />
 	</signal>
 	<method name="dbus_cmus_cmd">
-		<annotation name="org.freedesktop.DBus.GLib.CSymbol"
-		value="dbus_cmus_cmd"/>
+		<annotation name="org.freedesktop.DBus.GLib.CSymbol" 
+			value="dbus_cmus_cmd"/>
 		<arg type="s" name="cmd" direction="in" />
 		<arg type="i" name="ret" direction="out" />
 	</method>

@@ -10,6 +10,7 @@
 #include "debug.h"
 #include "mergesort.h"
 #include "options.h"
+#include "dbus-server.h"
 
 struct searchable *tree_searchable;
 struct window *lib_tree_win;
@@ -367,6 +368,7 @@ struct track_info *tree_set_selected(void)
 	if (list_empty(&lib_artist_head))
 		return NULL;
 
+	cmus_dbus_hook(DBUS_TREE_ENTER);
 	tree_win_get_selected(&artist, &album);
 	if (album == NULL) {
 		/* only artist selected, track window is empty

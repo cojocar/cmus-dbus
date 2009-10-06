@@ -26,6 +26,7 @@
 #include "xmalloc.h"
 #include "debug.h"
 #include "compiler.h"
+#include "dbus-server.h"
 
 #include <stdlib.h>
 #include <pthread.h>
@@ -299,7 +300,10 @@ static inline unsigned int buffer_second_size(void)
 
 static inline int get_next(struct track_info **ti)
 {
-	return player_cbs->get_next(ti);
+	int ret;
+	ret = player_cbs->get_next(ti);
+	cmus_dbus_hook(DBUS_AUTONEXT);
+	return ret;
 }
 
 /* updating player status {{{ */
