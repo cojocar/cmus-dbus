@@ -48,6 +48,7 @@
 #include "load_dir.h"
 #include "config/datadir.h"
 #include "help.h"
+#include "dbus-server.h"
 
 #include <stdlib.h>
 #include <ctype.h>
@@ -463,6 +464,8 @@ static void cmd_seek(char *arg)
 {
 	int relative = 0;
 	int seek = 0, sign = 1, count;
+
+	cmus_dbus_hook(DBUS_SEEK);
 
 	switch (*arg) {
 	case '-':
@@ -1226,6 +1229,7 @@ static void cmd_view(char *arg)
 
 static void cmd_p_next(char *arg)
 {
+	cmus_dbus_hook(DBUS_NEXT);
 	cmus_next();
 }
 
@@ -1245,11 +1249,13 @@ static void cmd_p_play(char *arg)
 
 static void cmd_p_prev(char *arg)
 {
+	cmus_dbus_hook(DBUS_PREV);
 	cmus_prev();
 }
 
 static void cmd_p_stop(char *arg)
 {
+	cmus_dbus_hook(DBUS_STOP);
 	player_stop();
 }
 

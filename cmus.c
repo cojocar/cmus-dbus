@@ -48,6 +48,9 @@ int cmus_init(void)
 
 void cmus_exit(void)
 {
+#ifdef CONFIG_DBUS
+	cmus_dbus_stop();
+#endif
 	worker_remove_jobs(JOB_TYPE_ANY);
 	worker_exit();
 	if (cache_close())

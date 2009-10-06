@@ -6,8 +6,6 @@
 
 #include <glib-object.h>
 
-#include "id3.h"
-
 typedef struct {
 	GObject parent;
 } DBusCmus;
@@ -16,10 +14,20 @@ typedef struct {
 	GObjectClass parent;
 } DBusCmusClass;
 
+enum dbus_actions {
+	DBUS_SEEK,
+	DBUS_NEXT,
+	DBUS_PREV,
+	DBUS_STOP,
+	DBUS_SORTED_ENTER,
+	DBUS_PL_ENTER,
+	DBUS_TREE_ENTER,
+	DBUS_AUTONEXT,
+};
 
+void cmus_dbus_hook(enum dbus_actions);
 void cmus_dbus_start(void);
 void cmus_dbus_stop(void);
-void cmus_dbus_signal(char **);
 GType cmus_get_type(void);
 
 #endif   /* ----- #ifndef DBUS_SERVER_INC  ----- */

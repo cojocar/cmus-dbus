@@ -6,6 +6,7 @@
 #include "editable.h"
 #include "options.h"
 #include "xmalloc.h"
+#include "dbus-server.h"
 
 struct editable pl_editable;
 struct simple_track *pl_cur_track = NULL;
@@ -86,6 +87,7 @@ struct track_info *pl_set_selected(void)
 	if (list_empty(&pl_editable.head))
 		return NULL;
 
+	cmus_dbus_hook(DBUS_PL_ENTER);
 	window_get_sel(pl_editable.win, &sel);
 	return set_track(iter_to_simple_track(&sel));
 }
