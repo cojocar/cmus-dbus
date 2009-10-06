@@ -31,8 +31,9 @@ dbus-marshal.h: dbus-marshal.list
 	glib-genmarshal --header $< > $@
 
 # programs {{{
+# dbus-marshal.o dbus-api.o dbus-server.o 
 cmus-y := \
-	dbus-marshal.o dbus-api.o dbus-server.o \
+	$(DBUS_OBJS) \
 	ape.o browser.o buffer.o cache.o cmdline.o cmus.o command_mode.o comment.o \
 	debug.o editable.o expr.o filters.o \
 	format_print.o gbuf.o glob.o help.o history.o http.o id3.o input.o job.o \

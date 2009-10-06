@@ -18,7 +18,6 @@
 #include "load_dir.h"
 #include "ui_curses.h"
 #include "cache.h"
-#include "config/dbus.h"
 #include "dbus-server.h"
 
 #include <sys/types.h>
@@ -39,18 +38,15 @@ int cmus_init(void)
 	worker_init();
 	play_queue_init();
 
-#ifdef CONFIG_DBUS
 	cmus_dbus_start();
-#endif
 
 	return 0;
 }
 
 void cmus_exit(void)
 {
-#ifdef CONFIG_DBUS
 	cmus_dbus_stop();
-#endif
+
 	worker_remove_jobs(JOB_TYPE_ANY);
 	worker_exit();
 	if (cache_close())
