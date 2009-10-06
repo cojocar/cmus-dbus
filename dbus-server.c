@@ -118,6 +118,10 @@ cmus_dbus_stop(void)
 	g_thread_join(dbus_thread);
 }
 
+/*
+ * Inspired by 
+ * http://www.hci-matters.com/blog/2008/05/06/c-music-player-audioscrobblerlastfm-patch/
+ */
 void
 cmus_dbus_hook(enum dbus_actions a)
 {

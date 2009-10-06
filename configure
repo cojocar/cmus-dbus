@@ -214,9 +214,8 @@ check_waveout()
 
 check_dbus()
 {
-	dbus_name="dbus-glib-1"
-#	check_library DBUS "`pkg-config --cflags ${dbus_name}`" "`pkg-config --libs ${dbus_name}`" || return 1
-	pkg_config DBUS ${dbus_name}
+	pkg_config DBUS "dbus-glib-1"
+	pkg_config GTHREAD "gthread-2.0"
 	DBUS_OBJS="dbus-marshal.o dbus-api.o dbus-server.o"
 	makefile_vars DBUS_OBJS
 	return $?
@@ -286,6 +285,7 @@ Optional Features: y/n
   CONFIG_OSS      Open Sound System                               [auto]
   CONFIG_SUN      Sun Audio                                       [auto]
   CONFIG_WAVEOUT  Windows Wave Out                                [auto]
+  CONFIG_DBUS     DBus support                                    [auto]
 
 Also many standard variables like CC are recognized."
 

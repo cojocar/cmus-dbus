@@ -7,7 +7,7 @@ include scripts/lib.mk
 
 CFLAGS += -D_FILE_OFFSET_BITS=64
 
-CMUS_LIBS = $(PTHREAD_LIBS) $(NCURSES_LIBS) $(ICONV_LIBS) $(DL_LIBS) -lm $(COMPAT_LIBS) $(DBUS_LIBS) `pkg-config --libs gthread-2.0`
+CMUS_LIBS = $(PTHREAD_LIBS) $(NCURSES_LIBS) $(ICONV_LIBS) $(DL_LIBS) -lm $(COMPAT_LIBS) $(DBUS_LIBS) $(GTHREAD_LIBS)
 
 input.o main.o ui_curses.o: .version
 input.o main.o ui_curses.o: CFLAGS += -DVERSION=\"$(VERSION)\"
