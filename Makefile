@@ -92,14 +92,14 @@ ip-$(CONFIG_AAC)	+= aac.so
 ip-$(CONFIG_FFMPEG)	+= ffmpeg.so
 
 $(flac-objs):		CFLAGS += $(FLAC_CFLAGS)
-$(mad-objs):		CFLAGS += $(MAD_CFLAGS) $(DBUS_CFLAGS)
+$(mad-objs):		CFLAGS += $(MAD_CFLAGS) 
 $(mikmod-objs):		CFLAGS += $(MIKMOD_CFLAGS)
 $(modplug-objs):	CFLAGS += $(MODPLUG_CFLAGS)
 $(mpc-objs):		CFLAGS += $(MPC_CFLAGS)
 $(vorbis-objs):		CFLAGS += $(VORBIS_CFLAGS)
 $(wavpack-objs):	CFLAGS += $(WAVPACK_CFLAGS)
 $(mp4-objs):		CFLAGS += $(MP4_CFLAGS)
-$(aac-objs):		CFLAGS += $(AAC_CFLAGS) $(DBUS_CFLAGS)
+$(aac-objs):		CFLAGS += $(AAC_CFLAGS) 
 $(ffmpeg-objs):		CFLAGS += $(FFMPEG_CFLAGS)
 
 flac.so: $(flac-objs) $(libcmus-y)

@@ -23,7 +23,6 @@
 #include "id3.h"
 #include "comment.h"
 #include "read_wrapper.h"
-#include "dbus-server.h"
 
 #include <faad.h>
 
