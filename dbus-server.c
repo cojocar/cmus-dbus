@@ -125,9 +125,8 @@ cmus_dbus_stop(void)
 void
 cmus_dbus_hook(enum dbus_actions a)
 {
-	const char *artist, *album, *track_name;
-	int secs, pos, track_number;
-	track_number = 0;
+	const char *artist, *album, *track_name, *tn;
+	int secs, pos;
 
 	player_info_lock();
 	if (player_info.ti == NULL) {
@@ -143,6 +142,9 @@ cmus_dbus_hook(enum dbus_actions a)
 	track_name = keyvals_get_val(player_info.ti->comments, "title");
 	if (!track_name)
 		track_name = "";
+	tn = keyvals_get_val(player_info.ti->comments, "tracknumber");
+	if (!tn)
+		tn = "0";
 
 	secs = player_info.ti->duration;
 	pos = player_info.pos;
@@ -154,8 +156,9 @@ cmus_dbus_hook(enum dbus_actions a)
 		artist,
 		track_name,
 		album,
-		track_number,
+		atoi(tn),
 		secs,
 		pos);
+	
 	player_info_unlock();
 }
