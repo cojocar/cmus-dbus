@@ -8,3 +8,8 @@ cmus-updategaim.py
 cmus-updatepidgin.py
 	Based on Joshua's cmus-updategaim.py script.
 	David Thiel <lx@redundancy.redundancy.org>
+
+as.py
+	lastfm song submission
+	Cojocar Lucian <cojocar@gmail.com>
+
