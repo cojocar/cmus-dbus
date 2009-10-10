@@ -3,6 +3,7 @@
 *.[ao]
 *.lo
 *.so
+*.pyc
 tags
 !.gitignore
 
