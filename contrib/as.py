@@ -33,6 +33,9 @@ DBusGMainLoop(set_as_default=True)
 bus = dbus.SessionBus()
 obj = bus.get_object("media.player.cmus", "/media/player/cmus")
 
+#Command Interface
+#print obj.dbus_cmus_cmd('quit')
+
 print bus.add_signal_receiver(NowPlayingCallback,
 		signal_name='NowPlaying', 
 		dbus_interface=None, 
